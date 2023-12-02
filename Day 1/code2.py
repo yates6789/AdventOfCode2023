@@ -1,8 +1,9 @@
-from re import findall
+import re
 from typing import Dict
 
 
 VALID_NUMBERS: Dict[str, str] = {
+    'zero':  '0',
     'one':   '1',
     'two':   '2',
     'three': '3',
@@ -15,24 +16,22 @@ VALID_NUMBERS: Dict[str, str] = {
 }
 
 
-def main():
+def get_lines() -> list[str]:
     with open('Day 1/input.txt', 'r') as f:
-        total = 0
-        for line in f.readlines():
-            pattern = '|'.join(VALID_NUMBERS.keys()) + '|' + r'[1-9]' 
-            strings = findall(pattern, line)
-            int1 = VALID_NUMBERS.get(strings[0], strings[0])
-            int2 = VALID_NUMBERS.get(strings[-1], strings[-1])
+        return f.readlines()
 
-            print(line.strip())
-            print(strings)
-            
-            result = int1 + int2
-            print(int1, int2, result)
-            print()
 
-            total += int(result)
-        print(total)
+def main():
+    total = 0
+    for line in get_lines():
+        pattern = re.compile(f'(?=([0-9]|{"|".join(VALID_NUMBERS.keys())}))')         
+        strings = re.findall(pattern, line)
+        int1 = VALID_NUMBERS.get(strings[0], strings[0])
+        int2 = VALID_NUMBERS.get(strings[-1], strings[-1])
+        result = int1 + int2
+        total += int(result)
+    print(total)
+
 
 if __name__ == '__main__':
     main()  
