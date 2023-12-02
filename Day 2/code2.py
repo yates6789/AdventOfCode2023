@@ -1,10 +1,6 @@
 import re
 from typing import Iterable, List
 
-RED_MAX   = 12
-GREEN_MAX = 13
-BLUE_MAX  = 14
-
 
 class Game:
     
@@ -48,9 +44,7 @@ def main():
     data = get_data()  
     total = 0  
     for game in process_data(data):
-        if game.red > RED_MAX or game.green > GREEN_MAX or game.blue > BLUE_MAX:
-            continue
-        total += game.ref  
+        total += game.red * game.green * game.blue
     print(total)
         
 
