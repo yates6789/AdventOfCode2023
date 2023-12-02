@@ -1,5 +1,5 @@
 import re
-from typing import Dict
+from typing import Dict, List
 
 
 VALID_NUMBERS: Dict[str, str] = {
@@ -16,7 +16,7 @@ VALID_NUMBERS: Dict[str, str] = {
 }
 
 
-def get_lines() -> list[str]:
+def get_lines() -> List[str]:
     with open('Day 1/input.txt', 'r') as f:
         return f.readlines()
 
@@ -31,6 +31,7 @@ def main():
         result = int1 + int2
         total += int(result)
     print(total)
+
 
 
 if __name__ == '__main__':
