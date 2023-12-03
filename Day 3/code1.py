@@ -36,6 +36,12 @@ def eval_char(char: str) -> bool:
     return True
 
 
+def eval_line(line: str | None, indexes: List[int]) -> bool:
+    if not line:
+        return False
+    return any([eval_char(line[i]) for i in indexes])
+
+
 def main():
     data = get_data()  
     
@@ -45,19 +51,17 @@ def main():
             value = int(match.group())
             indexes = get_indexes(match)
             
-            if lower:
-                if any([eval_char(lower[i]) for i in indexes]):
-                    total += value
-                    continue
+            if eval_line(lower, indexes):
+                total += value
+                continue
                         
-            if any([eval_char(line[i]) for i in indexes]):
+            if eval_line(line, indexes):
                 total += value
                 continue
                 
-            if upper:
-                if any([eval_char(upper[i]) for i in indexes]):
-                    total += value
-                    continue
+            if eval_line(upper, indexes):
+                total += value
+                continue
             
     print(total)
              
