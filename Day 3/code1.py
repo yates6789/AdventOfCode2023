@@ -8,12 +8,12 @@ def get_data() -> List[str]:
         
         
 def get_lines(data: List[str]) -> Iterable[Tuple[str | None, str, str | None]]:
-    for index, line in enumerate(data):
+    for i, line in enumerate(data):
         yield (
-        data[index - 1].strip() if index > 0 else None,
-        line.strip(),
-        data[index + 1].strip() if index < len(data) - 1 else None,
-    )
+            data[i - 1].strip() if i > 0 else None,
+            line.strip(),
+            data[i + 1].strip() if i < len(data) - 1 else None,
+        )
     
 
 def get_indexes(match: re.Match[str]) -> List[int]:
