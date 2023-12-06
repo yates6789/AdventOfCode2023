@@ -34,6 +34,8 @@ def process_data(data: List[str]) -> List[Map]:
     for map_str in data:
         routes: List[Route] = []
         for route_str in map_str.split('\n')[1:]:
+            if route_str == '':
+                continue
             dst_start, src_start, length = get_ints(route_str)
             routes.append(Route(dst_start, src_start, length))
         maps.append(Map(map_str, routes))
