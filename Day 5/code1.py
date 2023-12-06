@@ -1,26 +1,18 @@
 import re
-from typing import List
-
-
-class Route: 
-    
-    def __init__(self, dst_start: int, src_start: int, length: int):
-        self.dst_start = dst_start
-        self.src_start = src_start
-        self.length    = length
+from typing import List, Tuple
         
 
 class Map:
     
-    def __init__(self, initial: str, routes: List[Route]):
+    def __init__(self, initial: str, routes: List[Tuple[int, int, int]]):
         self.initial = initial
         self.routes  = routes
 
     def search(self, start: int) -> int:
-        for route in self.routes:
-            delta = start - route.src_start
-            if delta in range(route.length):
-                return route.dst_start + delta
+        for dest, src, sz in self.routes:
+            delta = start - src
+            if delta in range(sz):
+                return dest + delta
         return start
 
 
@@ -32,12 +24,12 @@ def get_data() -> List[str]:
 def process_data(data: List[str]) -> List[Map]:
     maps: List[Map] = []
     for map_str in data:
-        routes: List[Route] = []
+        routes: List[Tuple[int, int, int]] = []
         for route_str in map_str.split('\n')[1:]:
             if route_str == '':
                 continue
-            dst_start, src_start, length = get_ints(route_str)
-            routes.append(Route(dst_start, src_start, length))
+            dest, src, sz = get_ints(route_str)
+            routes.append((dest, src, sz))
         maps.append(Map(map_str, routes))
     return maps
 
