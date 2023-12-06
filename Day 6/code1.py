@@ -2,11 +2,12 @@ import re
 from typing import Iterable, Tuple, List
 
 
-def get_data() -> Iterable[Tuple[int, int]]:
+def get_data() -> Tuple[int, int]:
     with open('Day 6/input.txt', 'r') as f:
         time_str, dist_str = f.readlines()
-        times, dists = get_ints(time_str), get_ints(dist_str)
-        return zip(times, dists)
+        time = int(''.join([x for x in re.findall(r'\d+', time_str)]))
+        dist = int(''.join([x for x in re.findall(r'\d+', dist_str)]))
+        return time, dist
 
 
 def get_ints(string: str) -> List[int]:
@@ -26,12 +27,9 @@ def get_wins(limit: int, record: int) -> int:
 
     
 def main():
-    product = 1
-    for time, record in get_data():
-        wins = get_wins(time, record)
-        print(wins)
-        product *= wins
-    print(product)
+    time, record = get_data()
+    wins = get_wins(time, record)
+    print(wins)
          
     
 if __name__ == '__main__':
