@@ -1,5 +1,5 @@
 import re
-from typing import List, Set
+from typing import List, Tuple, Iterable
 
 
 class Route: 
@@ -34,6 +34,8 @@ def process_data(data: List[str]) -> List[Map]:
     for map_str in data:
         routes: List[Route] = []
         for route_str in map_str.split('\n')[1:]:
+            if route_str == '':
+                continue
             dst_start, src_start, length = get_ints(route_str)
             routes.append(Route(dst_start, src_start, length))
         maps.append(Map(map_str, routes))
@@ -44,32 +46,28 @@ def get_ints(string: str) -> List[int]:
     return [int(x) for x in re.findall(r'\d+', string)]
     
 
-def get_seeds(seeds_str: str) -> Set[int]:
+def yield_seed_ranges(seeds_str: str) -> Iterable[Tuple[int, int]]:
     seed_data = get_ints(seeds_str)
-    seeds: Set[int] = set()
     for i in range(0, len(seed_data), 2):
-        start, length = seed_data[i], seed_data[i + 1]
-        seeds.update(range(start, start + length))
-    return seeds
+        yield seed_data[i], seed_data[i + 1]
 
 
 def main():
     seeds_str, *data = get_data()
     maps = process_data(data)
-    seeds = get_seeds(seeds_str)
-    
-    print(f'{len(seeds)}: have mercy on my soul')
-    
-    results: List[int] = []
-    for seed in set(seeds):
-        result = seed
-        for _map in maps:
-            result = _map.search(result)
-        results.append(result)
-    result = min(results)
-    
-    print(result)
-     
+        
+    global_min: int | float = float('inf')
+    for start, length in yield_seed_ranges(seeds_str):
+         
+        range_min: int | float = float('inf')
+        for seed in range(start, start + length):
+            value = seed
+            for _map in maps:
+                value = _map.search(value)
+            range_min = min(range_min, value)
+        global_min = min(global_min, range_min)
+        print(f'({start}, {length}) -> {global_min}')   
+    print(global_min)
     
 if __name__ == '__main__':
     main()
